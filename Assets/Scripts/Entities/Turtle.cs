@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turtle : Spawnable, IMover
+public class Turtle : Spawnable, IMover, ITriggerable
 {
    
     //variables
@@ -36,5 +36,10 @@ public class Turtle : Spawnable, IMover
     public void Move()
     {
         transform.Translate(moveVector*Time.deltaTime*_speed);
+    }
+
+    public void ProcessTrigger(Player player) {
+        Debug.Log("Hitched a ride on a turtle!");
+
     }
 }

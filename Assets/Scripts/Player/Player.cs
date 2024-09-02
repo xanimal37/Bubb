@@ -11,7 +11,6 @@ public class Player : Bubble
     float power = 10.0f;
     //this will change based on bubble size
     private float physicsModifier = -0.1f;
-    private GameObject collectible = null;
 
     bool _hasArtefact;
     public bool hasArtefact
@@ -51,7 +50,12 @@ public class Player : Bubble
         Move();
     }
 
+    public override void Die()
+    {
+        base.Die();
+        died.Invoke();
 
+    }
     public override void Move()
     {
         //player lateral movement
@@ -85,7 +89,7 @@ public class Player : Bubble
     }
 
     //add a force to knock player back on collision with obstacle
-    void KnockBack(Transform obstacleTransform)
+    public void KnockBack(Transform obstacleTransform)
     {
         //get vector for knockback
         Vector3 playerDirectionVector = -(obstacleTransform.position - transform.position).normalized;
@@ -98,53 +102,26 @@ public class Player : Bubble
     //Collision detect
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("player collided!");
-        if (collision.gameObject.CompareTag("Obstacle"))
+        //get other entitity ICollidable
+        ICollidable collidedWith = collision.gameObject.GetComponent<ICollidable>();
+        if (collidedWith!=null)
         {
-            KnockBack(collision.gameObject.transform);
-            size -= 0.25f;
-
-        }
-        if (collision.gameObject.CompareTag("Bubble"))
-        {
-            Debug.Log("Collected a bubble");
-            size += collision.gameObject.GetComponent<Bubble>().size;
-            collision.gameObject.GetComponent<Bubble>().Die();
-        }
-        if (collision.gameObject.CompareTag("Poison"))
-        {
-            Debug.Log("THat bubble had posion gas!");
-            hasArtefact = false;
-            size -= collision.gameObject.GetComponent<Bubble>().size;
-            collision.gameObject.GetComponent<Bubble>().Die();
-            
-        }
-        if (collision.gameObject.CompareTag("Fish"))
-        {
-            Debug.Log("Eaten by fish!!!!");
-            size = 0;
+            collidedWith.ProcessCollision(this);
         }
         
-        if (size <= 0) { died.Invoke(); }
+        if (size <= 0) { Die(); }
         UpdateUI();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Collectible"))
-        {
-            //put artefact into bubble
-            ICollectible collectible = other.gameObject.GetComponent<ICollectible>();
-           //other.gameObject.transform.parent = gameObject.transform;
-            //other.gameObject.transform.position = Vector3.zero;
-
-            collectible.PickUp(this);
-
-            collectible.Process(this);
-
-            UpdateUI();
-                
+        ITriggerable triggeredBy = other.gameObject.GetComponent<ITriggerable>();
+        if (triggeredBy != null) { 
+            triggeredBy.ProcessTrigger(this);
         }
+      
+        UpdateUI();
+                
     }
 
     void UpdateUI()

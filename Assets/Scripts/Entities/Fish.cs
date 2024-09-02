@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 
-public class Fish : Spawnable, IMover, IDamageable
+public class Fish : Spawnable, IMover, IDamageable,ICollidable
 {
     private float _speed;
     public float speed
@@ -27,6 +27,10 @@ public class Fish : Spawnable, IMover, IDamageable
     public void TakeDamage(float damage)
     {
         Debug.Log("FISH TAKING DAMANGE! " + damage);
+    }
+
+    public void ProcessCollision(Player player) {
+        player.Die();
     }
 
     public void Move()

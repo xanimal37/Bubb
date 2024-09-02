@@ -2,20 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Treasure : MonoBehaviour, ICollectible
+public class Treasure : Collectible,ITriggerable
 {
-    public void PickUp(Player p) {
+    public override void Pickup(Player player) {
         Debug.Log("You picked up treasure!");
 
-        p.treasure += 1;
-    }
-
-    public void Drop(Player p) {
-        p.treasure -= 1;
-        Debug.Log("You dropped treasure.");
-    }
-
-    public void Process(Player player) {
+        player.treasure += 1;
         Destroy(gameObject);
     }
+
+    public override void Drop(Player player) {
+        player.treasure -= 1;
+        Debug.Log("You dropped treasure!");
+    }
+
+    public void ProcessTrigger(Player player) { 
+        Pickup(player);
+    }
+
 }

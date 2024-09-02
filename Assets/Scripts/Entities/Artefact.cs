@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Artefact : MonoBehaviour, ICollectible
+public class Artefact : Collectible, ITriggerable
 {
-    public void PickUp(Player p) {
+    public override void Pickup(Player player) {
        
-            p.hasArtefact = true;
+            player.hasArtefact = true;
+            Destroy(gameObject);
             Debug.Log("You picked up an artefact!");
     }
 
-    public void Drop(Player p) {
-        p.hasArtefact = false;
+    public override void Drop(Player player) {
+        player.hasArtefact = false;
         Debug.Log("You dropped an artefact!");
     }
 
-    public void Process(Player p)
-    {
-        Destroy(gameObject);
+    public void ProcessTrigger(Player player) {
+        Pickup(player);
     }
 }
