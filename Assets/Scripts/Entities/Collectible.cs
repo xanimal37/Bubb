@@ -1,10 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Collectible : MonoBehaviour
+public class Collectible : MonoBehaviour, ITriggerable
 {
-    public virtual void Pickup(Player player) { }
+    public GameEvent pickedUp;
 
-    public virtual void Drop(Player player) { }
+    public virtual void OnTriggerEnter(Collider other)
+    {
+        pickedUp.Occurred();
+        Destroy(gameObject);
+    }
+
+   
 }

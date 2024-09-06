@@ -1,4 +1,8 @@
-public interface ITriggerable
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public interface ITriggerable 
 {
-    void ProcessTrigger(Player player) { }
+    public void OnTriggerEnter(Collider other);
 }
