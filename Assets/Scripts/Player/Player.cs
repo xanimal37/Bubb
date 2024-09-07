@@ -9,31 +9,12 @@ public class Player : Bubble
     //this will change based on bubble size
     private float physicsModifier = -0.1f;
 
-    bool _hasArtefact;
-
-    public GameEventListener pickUp;
-
-    public bool hasArtefact
-    {
-        get { return _hasArtefact; }
-        set { _hasArtefact = value; }
-    }
-    int _treasure;
-    public int treasure
-    {
-        get { return _treasure; }
-        set { _treasure = value; }
-    }
-
     //events
     public UnityEvent died;
 
     private void Awake()
     {
         Spawn();
-        _treasure = 0;
-        _hasArtefact = false;
-
     }
 
     void Start()
@@ -51,12 +32,6 @@ public class Player : Bubble
         Move();
     }
 
-    public override void Die()
-    {
-        base.Die();
-        died.Invoke();
-
-    }
     public override void Move()
     {
         
@@ -107,25 +82,10 @@ public class Player : Bubble
             collidedWith.ProcessCollision(this);
         }
         
-        if (size <= 0) { Die(); }
-        UpdateUI();
+        if (size <= 0) { died.Invoke(); }
+        
     }
 
-    void UpdateUI()
-    {
-        GameManager.gameManager.UpdateTreasure(treasure);
-        GameManager.gameManager.ToggleArtefactUI(hasArtefact);
-    }
-
-    public void PICKUPTEST()
-    {
-        UIManager.uiManager.ShowAlertMessage("Picked up an artefact!");
-    }
-
-    public void PICKUPTEST2()
-    {
-        UIManager.uiManager.ShowAlertMessage("Picked up an treasure!");
-    }
 
 
 }

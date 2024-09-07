@@ -1,15 +1,23 @@
 using UnityEngine;
 using System;
+using UnityEditor.Rendering;
 
-public class Collectible : MonoBehaviour, ITriggerable
+public abstract class Collectible : MonoBehaviour, ITriggerable
 {
-    public GameEvent pickedUp;
+    public CollectibleEvent pickUp;
 
-    public virtual void OnTriggerEnter(Collider other)
+
+    public void OnTriggerEnter(Collider other)
     {
-        pickedUp.Occurred();
-        Destroy(gameObject);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            pickUp.Occurred(this);
+            Destroy(gameObject);
+
+        }
     }
+
+  
 
    
 }

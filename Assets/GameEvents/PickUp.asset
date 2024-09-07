@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ad5d62976aec664aa6dbba8fd6f09ef, type: 3}
-  m_Name: ArtefactPickup
+  m_Name: PickUp
   m_EditorClassIdentifier: 

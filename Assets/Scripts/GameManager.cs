@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -9,34 +9,45 @@ public class GameManager : MonoBehaviour
     public GameObject playerCamera;
     public GameObject player;
 
+    private PlayerStats playerStats;
+
     private void Awake()
     {
         gameManager = this;
+        playerStats=GetComponent<PlayerStats>();
     }
     public void StartGame()
     {
-        player.SetActive(true);
+        
     }
 
     public void GameOver()
     {
         UIManager.uiManager.ShowAlertMessage("GAME OVER");
+        player.SetActive(false);
     }
 
-    public void UpdateTreasure(int amount)
+    public void UpdateTreasure()
     {
-       UIManager.uiManager.UpdateTreasureText( "Treasure: "+amount.ToString());
+        playerStats.treasure++;
+       UIManager.uiManager.UpdateTreasureText( "Treasure: "+playerStats.treasure.ToString());
     }
 
-    public void ToggleArtefactUI(bool hasArtefact)
+    public void PickUpArtefact()
     {
-        if (hasArtefact)
-        {
-            UIManager.uiManager.UpdateArtefactText("Has Artefact");
+        playerStats.hasArtefact = true;
+        UIManager.uiManager.UpdateArtefactText("Artefact: " + playerStats.hasArtefact.ToString());
+    }
+
+    public void CollectiblePickedUp(Collectible collectible)
+    {
+        if(collectible is Artefact)
+        
+            {PickUpArtefact(); 
         }
-        else
+        if(collectible is Treasure)
         {
-            UIManager.uiManager.UpdateArtefactText("No Artefact");
+            UpdateTreasure();
         }
     }
    
