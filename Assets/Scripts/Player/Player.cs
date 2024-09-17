@@ -12,13 +12,10 @@ public class Player : Bubble
     //events
     public UnityEvent died;
 
-    private void Awake()
-    {
-        Spawn();
-    }
 
     void Start()
     {
+        Spawn();
         size = 4;
         //makes the bubble "float" up by making gravity negative
         Physics.gravity *= physicsModifier;
