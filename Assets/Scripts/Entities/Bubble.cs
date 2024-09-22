@@ -33,7 +33,7 @@ public abstract class Bubble : Spawnable, IMover
         if (meshRenderer == null) {
             meshRenderer = GetComponentInChildren<MeshRenderer>();
         }
-
+        bubbles = GetComponentInChildren<Bubbles>();
     }
 
     //set size on spawn
@@ -47,7 +47,6 @@ public abstract class Bubble : Spawnable, IMover
             thisCollider.enabled = true;
         }
         gameObject.transform.localScale = new Vector3(size,size,size);
-        bubbles = GetComponentInChildren<Bubbles>();
        
     }
 
@@ -62,7 +61,7 @@ public abstract class Bubble : Spawnable, IMover
             thisCollider.enabled = false;
         }
        
-        bubbles.PlayParticles();
+        bubbles.PlayExplodeParticles();
         StartCoroutine(DelayedDeath());
         
     }
@@ -79,7 +78,7 @@ public abstract class Bubble : Spawnable, IMover
 
     IEnumerator DelayedDeath()
     {
-        yield return new WaitForSecondsRealtime(1);
+        yield return new WaitForSecondsRealtime(3);
         base.Die();
     }
 }

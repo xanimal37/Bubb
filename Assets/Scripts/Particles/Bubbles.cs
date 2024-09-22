@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class Bubbles : MonoBehaviour
 {
-    private ParticleSystem bubbleParticles;
+    [SerializeField]
+    private ParticleSystem explodeParticles;
+    [SerializeField]
+    private ParticleSystem moveParticles;
 
-    void Start()
+
+    public void PlayExplodeParticles()
     {
-        bubbleParticles = GetComponent<ParticleSystem>();
+        Debug.Log("PLAYING EXPLODE PARTICLES on " + gameObject.transform.parent.gameObject.name);
+        explodeParticles.Play();
     }
 
-    public void PlayParticles()
+    public void PlayMoveParticles()
     {
-        bubbleParticles.Play();
+        Debug.Log("PLAYING MOVE PARTICLES!");
+        moveParticles.Play(); 
     }
-
-   
 }

@@ -7,10 +7,8 @@ public abstract class Collectible : MonoBehaviour, ITriggerable
     public CollectibleEvent pickUp;
 
 
-    public void OnTriggerEnter(Collider other)
+    public void ProcessTrigger(Player player)
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
             pickUp.Occurred(this);
             Destroy(gameObject);
 
@@ -18,6 +16,3 @@ public abstract class Collectible : MonoBehaviour, ITriggerable
     }
 
   
-
-   
-}

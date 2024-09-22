@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turtle : Spawnable, IMover
+public class Turtle : Spawnable, IMover, ITriggerable
 {
    
     //variables
@@ -38,10 +38,12 @@ public class Turtle : Spawnable, IMover
         transform.Translate(moveVector*Time.deltaTime*_speed);
     }
 
+    //when player triggers, player pass self reference
     public void ProcessTrigger(Player player)
     {
         Debug.Log("Hitched a ride on a turtle!");
-
+        player.JumpOnTurtle(this);
+        
       
     }
     
