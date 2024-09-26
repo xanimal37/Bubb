@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Turtle : Spawnable, IMover, ITriggerable
 {
-   
+
     //variables
     private Vector3 moveVector=new Vector3(0,0,-1);
     private float _speed = 5.0f;
@@ -16,7 +16,7 @@ public class Turtle : Spawnable, IMover, ITriggerable
 
     //test
     float lifetime = 0f;
-    float maxLifetime = 6.0f;
+    float maxLifetime = 20.0f;
 
     void OnEnable()
     {
@@ -26,8 +26,7 @@ public class Turtle : Spawnable, IMover, ITriggerable
     private void Update()
     {
         lifetime += Time.deltaTime;
-        if (lifetime > maxLifetime) { 
-            Debug.Log("returned turtle");
+        if (lifetime > maxLifetime) {
             TurtlePool.Pool.ReturnToPool(this);
         }
         Move();
@@ -44,7 +43,14 @@ public class Turtle : Spawnable, IMover, ITriggerable
         Debug.Log("Hitched a ride on a turtle!");
         player.JumpOnTurtle(this);
         
-      
     }
-    
+
+    public override void Die()
+    {
+        TurtlePool.Pool.ReturnToPool(this);
+
+    }
+
+
+
 }

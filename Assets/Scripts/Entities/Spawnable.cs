@@ -12,6 +12,6 @@ public abstract class Spawnable : MonoBehaviour
     }
 
     public virtual void Die(){
-        gameObject.SetActive(false);
+    gameObject.SetActive(false);
     }
 }

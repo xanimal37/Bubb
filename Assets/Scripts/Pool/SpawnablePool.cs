@@ -11,11 +11,6 @@ public abstract class SpawnablePool: MonoBehaviour
    // public static SpawnablePool Pool { get; private set; }
     private Queue<Spawnable> spawnables = new Queue<Spawnable>();
 
-   // private void Awake()
-   // {
-    //    Pool = this;
-    //}
-
     private void Start()
     {
         for (int i = 0; i < numSpawnables; i++)
@@ -39,7 +34,7 @@ public abstract class SpawnablePool: MonoBehaviour
     public void ReturnToPool(Spawnable s)
     {
         spawnables.Enqueue(s);
-        s.Die();
+        
     }
 
     public void AddSpawnable() {

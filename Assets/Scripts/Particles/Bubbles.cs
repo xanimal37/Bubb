@@ -12,13 +12,11 @@ public class Bubbles : MonoBehaviour
 
     public void PlayExplodeParticles()
     {
-        Debug.Log("PLAYING EXPLODE PARTICLES on " + gameObject.transform.parent.gameObject.name);
         explodeParticles.Play();
     }
 
     public void PlayMoveParticles()
     {
-        Debug.Log("PLAYING MOVE PARTICLES!");
         moveParticles.Play(); 
     }
 }

@@ -1,17 +1,35 @@
+using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 public class Timer
 {
-    private float seconds;
-    private float timeStamp;
-    public Timer(float seconds) {
-        this.seconds = seconds;
-        //time on creation
-        timeStamp = Time.deltaTime;
-    }
-   private void Update()
+    public Action methodToCall; //no return type for Action
+    //
+    private float timeToWait;
+
+    public Timer(float seconds)
     {
-        if (Time.time - timeStamp > seconds) { 
-        
-        }
+        timeToWait = seconds;
     }
+
+    public void SetAction(Action action) {
+        methodToCall = action;
+    }
+
+    public IEnumerator RunTimer()
+    {
+        yield return new WaitForSecondsRealtime(timeToWait);
+        methodToCall();
+    }
+
+    
+
+
+
+   
+
+    
+       
+    
 }

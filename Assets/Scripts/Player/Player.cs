@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,6 +17,9 @@ public class Player : Bubble
     //state
     public PlayerState playerState { get; set; }
 
+    //timer(s)
+    Timer timer = null;
+
 
     void Start()
     {
@@ -26,9 +30,6 @@ public class Player : Bubble
         Physics.gravity *= physicsModifier;
         //get reference to rigidbody & Collider
         rb = GetComponent<Rigidbody>();
-        if (rb != null) {
-            Debug.Log("FOUND RB");
-        }
         rb.drag = 0.5f;
     }
 
@@ -90,7 +91,13 @@ public class Player : Bubble
             collidedWith.ProcessCollision(this);
         }
         
-        if (size <= 0) { died.Invoke(); }
+        if (size <= 0) { 
+            died.Invoke();
+        
+        //what did the player hit?
+        Debug.Log("PLAYER KILLED BY " + collision.gameObject.name);
+        
+        }
         
     }
 
@@ -110,16 +117,33 @@ public class Player : Bubble
         rb.isKinematic = true;
         rb.detectCollisions = false;
         this.gameObject.transform.SetParent(turtle.gameObject.transform, false);
+        Debug.Log("JUMPED ON turTLE");
+
+        timer = new Timer(6);
+        timer.SetAction(this.JumpOffTurtle);
+        IEnumerator coroutineTimer = timer.RunTimer();
+        StartCoroutine(coroutineTimer);
+
         
-        
+
+
     }
 
-    public void JumpOffTurtle(Turtle turtle)
+    public void JumpOffTurtle()
     {
-        playerState = PlayerState.NORMAL;
-        rb.isKinematic = false;
-        rb.detectCollisions = true;
+        //make the turtle disappear
+        this.gameObject.transform.parent.gameObject.GetComponent<Turtle>().Die();
         this.gameObject.transform.SetParent(null,false);
+
+        timer = new Timer(3);
+        timer.SetAction(() => {
+            playerState = PlayerState.NORMAL;
+            rb.isKinematic = false;
+            rb.detectCollisions = true;
+            Debug.Log("JUMPED OFF turTLE");
+        });
+        IEnumerator coroutineTimer = timer.RunTimer();
+        StartCoroutine(coroutineTimer);
     }
 
 
