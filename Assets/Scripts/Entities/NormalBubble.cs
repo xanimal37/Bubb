@@ -6,7 +6,6 @@ public class NormalBubble : Bubble, ICollidable
 {
     public void ProcessCollision(Player player) {
         player.size += size;
-        player.KnockBack(gameObject.transform);
         Die();
 
     }

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-   public int treasure { get; set; }
+    
+    public int treasure { get; set; }
     public bool hasArtefact { get; set; }
 
     private void Awake()

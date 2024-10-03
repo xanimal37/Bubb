@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -7,24 +8,32 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager gameManager { get; private set; }
     public GameObject playerCamera;
-    public GameObject player;
+    public GameObject playerGO;
 
     private PlayerStats playerStats;
+    private PlayerPosition playerPosition;
 
     private void Awake()
     {
         gameManager = this;
         playerStats=GetComponent<PlayerStats>();
-    }
-    public void StartGame()
-    {
         
+    }
+
+    private void Start()
+    {
+        StartGame();
     }
 
     public void GameOver()
     {
         UIManager.uiManager.ShowAlertMessage("GAME OVER");
-        player.SetActive(false);
+        playerGO.SetActive(false);
+    }
+
+    public void StartGame()
+    {   
+        UIManager.uiManager.ShowAlertMessage("A Baby Turtle got drawn too deep by the current! \nGet to it so it can have enough air to reach the surface!");
     }
 
     public void UpdateTreasure()
@@ -49,6 +58,11 @@ public class GameManager : MonoBehaviour
         {
             UpdateTreasure();
         }
+    }
+
+    public void UpdateDepth(string depth)
+    {
+        UIManager.uiManager.UpdateDepthText(depth.ToString());
     }
    
 }

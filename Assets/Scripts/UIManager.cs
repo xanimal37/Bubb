@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI alertMessage;
     public TextMeshProUGUI treasureText;
     public TextMeshProUGUI artefactText;
+    public TextMeshProUGUI depthText;
 
 
     public static UIManager uiManager { get; private set; }
@@ -34,5 +35,10 @@ public class UIManager : MonoBehaviour
     public void UpdateArtefactText(string msgText) {
         artefactText.text = msgText;
     }  
+
+    public void UpdateDepthText(string depth)
+    {
+        depthText.text = depth;
+    }
 
 }

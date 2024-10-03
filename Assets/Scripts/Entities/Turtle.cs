@@ -6,7 +6,7 @@ public class Turtle : Spawnable, IMover, ITriggerable
 {
 
     //variables
-    private Vector3 moveVector=new Vector3(0,0,-1);
+    private Vector3 moveVector=new Vector3(0,0,1);
     private float _speed = 5.0f;
     public float speed
     {

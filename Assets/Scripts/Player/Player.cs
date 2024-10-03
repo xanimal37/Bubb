@@ -5,80 +5,18 @@ using UnityEngine.Events;
 
 public class Player : Bubble
 {
-    //physics and interactions
-    Rigidbody rb;
-    float power = 10.0f;
-    //this will change based on bubble size
-    private float physicsModifier = -0.1f;
-
+    PlayerMove playerMove;
     //events
     public UnityEvent died;
-
     //state
     public PlayerState playerState { get; set; }
-
-    //timer(s)
-    Timer timer = null;
-
 
     void Start()
     {
         Spawn();
-        playerState = PlayerState.NORMAL;
+        playerMove = gameObject.GetComponent<PlayerMove>();
+        playerState=PlayerState.NORMAL;
         size = 4;
-        //makes the bubble "float" up by making gravity negative
-        Physics.gravity *= physicsModifier;
-        //get reference to rigidbody & Collider
-        rb = GetComponent<Rigidbody>();
-        rb.drag = 0.5f;
-    }
-
-    private void Update()
-    {
-        if (playerState == PlayerState.NORMAL)
-        {
-            Move();
-        }
-    }
-
-    public override void Move()
-    {
-        
-            //player movement basic input
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                rb.AddForce(-power, 0, 0, ForceMode.Impulse);
-                size -= 0.25f;
-            }
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                rb.AddForce(power, 0, 0, ForceMode.Impulse);
-                size -= 0.25f;
-            }
-
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                rb.AddForce(0, power, 0, ForceMode.Impulse);
-                size -= 0.25f;
-            }
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                rb.AddForce(0, -power, 0, ForceMode.Impulse);
-                size -= 0.25f;
-            }
-            if (size <= 0) { died.Invoke(); }
-        
-    }
-
-    //add a force to knock player back on collision with obstacle
-    public void KnockBack(Transform obstacleTransform)
-    {
-        //get vector for knockback
-        Vector3 playerDirectionVector = -(obstacleTransform.position - transform.position).normalized;
-        Vector3 playerVelocity = rb.velocity;
-
-        //knockback player
-        rb.AddForce(playerDirectionVector.x * playerVelocity.x, playerDirectionVector.y * playerVelocity.y, playerDirectionVector.z * playerVelocity.z, ForceMode.Impulse);
     }
 
     //Collision detect
@@ -90,14 +28,8 @@ public class Player : Bubble
         {
             collidedWith.ProcessCollision(this);
         }
-        
-        if (size <= 0) { 
-            died.Invoke();
-        
-        //what did the player hit?
-        Debug.Log("PLAYER KILLED BY " + collision.gameObject.name);
-        
-        }
+
+        CheckSize(); 
         
     }
 
@@ -111,43 +43,20 @@ public class Player : Bubble
         }
     }
 
+    public void CheckSize()
+    {
+        if (size <= 0)
+        {
+            died.Invoke();
+        }
+
+    }
+
     public void JumpOnTurtle(Turtle turtle)
     {
-        playerState=PlayerState.ONTURTLE;
-        rb.isKinematic = true;
-        rb.detectCollisions = false;
-        this.gameObject.transform.SetParent(turtle.gameObject.transform, false);
-        Debug.Log("JUMPED ON turTLE");
-
-        timer = new Timer(6);
-        timer.SetAction(this.JumpOffTurtle);
-        IEnumerator coroutineTimer = timer.RunTimer();
-        StartCoroutine(coroutineTimer);
-
-        
-
-
+        playerMove.JumpOnTurtle(turtle);
+        playerState = PlayerState.ONTURTLE;
     }
 
-    public void JumpOffTurtle()
-    {
-        //make the turtle disappear
-        this.gameObject.transform.parent.gameObject.GetComponent<Turtle>().Die();
-        this.gameObject.transform.SetParent(null,false);
-
-        timer = new Timer(3);
-        timer.SetAction(() => {
-            playerState = PlayerState.NORMAL;
-            rb.isKinematic = false;
-            rb.detectCollisions = true;
-            Debug.Log("JUMPED OFF turTLE");
-        });
-        IEnumerator coroutineTimer = timer.RunTimer();
-        StartCoroutine(coroutineTimer);
-    }
-
-
-
+   
 }
-    
-    

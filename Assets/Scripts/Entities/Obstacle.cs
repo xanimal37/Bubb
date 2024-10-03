@@ -6,7 +6,6 @@ public class Obstacle : MonoBehaviour, ICollidable
 {
   public void ProcessCollision(Player player)
     {
-        player.size -= .25f;
-        player.KnockBack(gameObject.transform);
+        Debug.Log("HIT AN OBSTACLE");
     }
 }
