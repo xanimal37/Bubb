@@ -6,7 +6,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject alertMessageGO;
+    public GameObject mainMenu;
+    public GameObject gameUI;
+
     public TextMeshProUGUI alertMessage;
     public TextMeshProUGUI treasureText;
     public TextMeshProUGUI artefactText;
@@ -15,15 +17,23 @@ public class UIManager : MonoBehaviour
 
     public static UIManager uiManager { get; private set; }
 
-    private void Awake()
+    public void UpdateGameState(GameState state)
+    {
+        if (state == GameState.GAME) { 
+            mainMenu.SetActive(false);
+            gameUI.SetActive(true);
+        }
+    }
+
+    private void Start()
     {
         uiManager = this;
-        alertMessageGO.SetActive(false);
+        gameUI.SetActive(false);
+        mainMenu.SetActive(true);
     }
 
     public void ShowAlertMessage(string msgText)
     {
-        alertMessageGO.SetActive(true);
         alertMessage.text = msgText;
     }
 

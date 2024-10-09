@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour, ICollidable
+public class Obstacle : Environment, ICollidable
 {
   public void ProcessCollision(Player player)
     {
-        Debug.Log("HIT AN OBSTACLE");
+        
+        environmentInteraction.Invoke("Collided with an obstacle!");
     }
 }

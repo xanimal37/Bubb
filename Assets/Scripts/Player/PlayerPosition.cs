@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class PlayerPosition : MonoBehaviour
 {
-    public GameObject bottom;
+    private GameObject bottom;
+
+    private void Start()
+    {
+        bottom = GameObject.Find("bottom");
+    }
 
     private void FixedUpdate()
     {

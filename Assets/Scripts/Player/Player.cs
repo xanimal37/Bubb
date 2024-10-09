@@ -13,7 +13,6 @@ public class Player : Bubble
 
     void Start()
     {
-        Spawn();
         playerMove = gameObject.GetComponent<PlayerMove>();
         playerState=PlayerState.NORMAL;
         size = 4;
