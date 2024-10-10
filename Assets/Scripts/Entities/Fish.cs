@@ -19,6 +19,7 @@ public class Fish : Spawnable, IMover,ICollidable
 
     public void ProcessCollision(Player player) {
         player.Die();
+        UIManager.uiManager.ShowAlertMessage("killed by a fish!");
     }
 
     public void Move()

@@ -1,5 +1,6 @@
 public enum PlayerState
 {
     NORMAL,
-    ONTURTLE
+    ONTURTLE,
+    DEAD
 }

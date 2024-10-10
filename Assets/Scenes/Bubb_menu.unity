@@ -326,7 +326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 275193022}
   m_Layer: 0
-  m_Name: GameMenu
+  m_Name: GameInterface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1007,6 +1007,7 @@ GameObject:
   - component: {fileID: 907823242}
   - component: {fileID: 907823244}
   - component: {fileID: 907823243}
+  - component: {fileID: 907823245}
   m_Layer: 5
   m_Name: alertMessage
   m_TagString: Untagged
@@ -1030,7 +1031,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 83, y: 92}
+  m_AnchoredPosition: {x: 83, y: 92.00003}
   m_SizeDelta: {x: -18.5, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &907823243
@@ -1130,6 +1131,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 907823241}
   m_CullTransparentMesh: 1
+--- !u!95 &907823245
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907823241}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 965fcfd27ed2843459cf68874e807fdd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -6425,6 +6447,8 @@ GameObject:
   - component: {fileID: 1459686743}
   - component: {fileID: 1459686742}
   - component: {fileID: 1459686744}
+  - component: {fileID: 1459686745}
+  - component: {fileID: 1459686746}
   m_Layer: 0
   m_Name: _gameManager
   m_TagString: Untagged
@@ -6485,6 +6509,46 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d27f5d334713654f8e91315d6e3dee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1459686745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459686741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa6e199a971c444e9c37a311414a4a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collEvent: {fileID: 11400000, guid: a7967cfe9334ab14da037acef0192ad3, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1459686742}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CollectiblePickedUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1459686746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1459686741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95b884c21c53d8548aebe6106db125a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1602250657

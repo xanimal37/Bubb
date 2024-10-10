@@ -4,22 +4,24 @@ using UnityEngine;
 
 public class PlayerPosition : MonoBehaviour
 {
-    private GameObject bottom;
+    private Transform bottomTransform=null;
 
-    private void Start()
+    public void SetBottomLoc(Transform t)
     {
-        bottom = GameObject.Find("bottom");
+        bottomTransform = t;
     }
 
     private void FixedUpdate()
     {
+        if (bottomTransform != null) { 
         GameManager.gameManager.UpdateDepth(GetDepth().ToString());
+    }
     }
 
     private int GetDepth()
     {
         //caulcuate distance from bottom
-        float depth = Vector3.Distance(gameObject.transform.position, bottom.transform.position);
+        float depth = Vector3.Distance(gameObject.transform.position, bottomTransform.position);
         return Mathf.RoundToInt(depth);
     }
 }

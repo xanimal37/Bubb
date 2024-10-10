@@ -40,7 +40,6 @@ public class Turtle : Spawnable, IMover, ITriggerable
     //when player triggers, player pass self reference
     public void ProcessTrigger(Player player)
     {
-        Debug.Log("Hitched a ride on a turtle!");
         player.JumpOnTurtle(this);
         
     }
@@ -49,6 +48,11 @@ public class Turtle : Spawnable, IMover, ITriggerable
     {
         TurtlePool.Pool.ReturnToPool(this);
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Die();
     }
 
 

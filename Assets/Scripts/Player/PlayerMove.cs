@@ -29,7 +29,7 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        if (player.playerState != PlayerState.ONTURTLE)
+        if (player.playerState == PlayerState.NORMAL)
         {
             Move();
         }
@@ -69,7 +69,7 @@ public class PlayerMove : MonoBehaviour
         rb.isKinematic = true;
         rb.detectCollisions = false;
         this.gameObject.transform.SetParent(turtle.gameObject.transform, true);
-        Debug.Log("JUMPED ON turTLE");
+        UIManager.uiManager.ShowAlertMessage("jumped on a turtle!");
         timer = new Timer(6);
         timer.SetAction(JumpOffTurtle);
         IEnumerator coroutineTimer = timer.RunTimer();
@@ -84,7 +84,7 @@ public class PlayerMove : MonoBehaviour
         this.gameObject.transform.SetParent(null, true);
         //remove turtle from game
         turtle.Die();
-        Debug.Log("JUMPED OFF TURTLE");
+        UIManager.uiManager.ShowAlertMessage("jumped off turtle!");
 
         //Create a timer
         //after 2 seconds make the player invulnerable (this will become a variable time length)

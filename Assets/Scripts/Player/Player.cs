@@ -46,16 +46,25 @@ public class Player : Bubble
     {
         if (size <= 0)
         {
-            died.Invoke();
+            Die();
         }
-
     }
 
     public void JumpOnTurtle(Turtle turtle)
     {
         playerMove.JumpOnTurtle(turtle);
         playerState = PlayerState.ONTURTLE;
+        
     }
 
-   
+    public override void Die()
+    {
+        base.Die();
+        playerState=PlayerState.DEAD;
+        died.Invoke();
+    }
+
+
+
+
 }

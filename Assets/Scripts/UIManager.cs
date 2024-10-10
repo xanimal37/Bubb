@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     public GameObject gameUI;
 
     public TextMeshProUGUI alertMessage;
+    private Animator alertMessageAnimator;
+
     public TextMeshProUGUI treasureText;
     public TextMeshProUGUI artefactText;
     public TextMeshProUGUI depthText;
@@ -17,24 +19,27 @@ public class UIManager : MonoBehaviour
 
     public static UIManager uiManager { get; private set; }
 
-    public void UpdateGameState(GameState state)
-    {
-        if (state == GameState.GAME) { 
-            mainMenu.SetActive(false);
-            gameUI.SetActive(true);
-        }
-    }
-
     private void Start()
     {
         uiManager = this;
         gameUI.SetActive(false);
         mainMenu.SetActive(true);
+        alertMessageAnimator = alertMessage.GetComponent<Animator>();
+    }
+
+    public void UpdateGameState(GameState state)
+    {
+        if (state == GameState.GAME)
+        {
+            mainMenu.SetActive(false);
+            gameUI.SetActive(true);
+        }
     }
 
     public void ShowAlertMessage(string msgText)
     {
         alertMessage.text = msgText;
+        alertMessageAnimator.Play("FadeOut",0,0);
     }
 
     public void UpdateTreasureText(string msgText) {
