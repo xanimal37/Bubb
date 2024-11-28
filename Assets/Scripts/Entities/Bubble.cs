@@ -1,14 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
 
-public abstract class Bubble : Spawnable, IMover
+public abstract class Bubble : Spawnable, IMover, ICollidable
 {
     private float _size;
-    private Bubbles bubbles;
-    private MeshRenderer meshRenderer;
-    private Collider thisCollider;
+    public GameObject particleSystemGO;
+
+    public event Action BubblePop;
+
     public float size
     {
         get { return _size; }
@@ -26,44 +28,20 @@ public abstract class Bubble : Spawnable, IMover
     }
     public float speed { get; set; }
 
-    void Awake()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-        thisCollider = GetComponent<Collider>();
-        if (meshRenderer == null) {
-            meshRenderer = GetComponentInChildren<MeshRenderer>();
-        }
-        bubbles = GetComponentInChildren<Bubbles>();
-    }
 
     //set size on spawn
     private void OnEnable()
     {
-        if (meshRenderer != null) {
-            meshRenderer.enabled = true;
-        }
-        if (thisCollider != null)
-        {
-            thisCollider.enabled = true;
-        }
         gameObject.transform.localScale = new Vector3(size,size,size);
-       
+        RegisterWithManagers();
     }
 
     public override void Die()
     {
-        if (meshRenderer != null)
-        {
-            meshRenderer.enabled =false;
-        }
-        if(thisCollider != null)
-        {
-            thisCollider.enabled = false;
-        }
-       
-        bubbles.PlayExplodeParticles();
-        StartCoroutine(DelayedDeath());
-        
+        Instantiate(particleSystemGO,gameObject.transform.position,Quaternion.identity);
+        BubblePop?.Invoke();
+        UnregisterWithManagers();
+       base.Die();
     }
 
     public virtual void Move()
@@ -76,9 +54,20 @@ public abstract class Bubble : Spawnable, IMover
         Move();
     }
 
-    IEnumerator DelayedDeath()
+    public virtual void ProcessCollision(Player player)
     {
-        yield return new WaitForSecondsRealtime(3);
-        base.Die();
+        
     }
+
+    public override void RegisterWithManagers()
+    {
+        AudioManager.Instance.RegisterBubble(this);
+    }
+
+    public override void UnregisterWithManagers()
+    {
+        AudioManager.Instance.UnregisterBubble(this);
+    }
+
+
 }

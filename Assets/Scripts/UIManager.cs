@@ -1,59 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject mainMenu;
-    public GameObject gameUI;
+    public static UIManager Instance { get; private set; }
 
-    public TextMeshProUGUI alertMessage;
-    private Animator alertMessageAnimator;
+    public GameObject activeUI;
+    private GameState gameState;
 
-    public TextMeshProUGUI treasureText;
-    public TextMeshProUGUI artefactText;
-    public TextMeshProUGUI depthText;
+    //gameUI
+    private TextMeshProUGUI gameMessage;
+    private TextMeshProUGUI depthText;
 
+    //menuUI
 
-    public static UIManager uiManager { get; private set; }
+    
+    void Awake()
+    {
+        Instance = this;
+        
+    }
 
     private void Start()
     {
-        uiManager = this;
-        gameUI.SetActive(false);
-        mainMenu.SetActive(true);
-        alertMessageAnimator = alertMessage.GetComponent<Animator>();
+        GameManager.OnAfterGameStateChanged += HandleGameStateChanged;
     }
 
-    public void UpdateGameState(GameState state)
+    public void HandleGameStateButtonPress(int gameStateIndex)
     {
-        if (state == GameState.GAME)
+        GameState gameState = (GameState)gameStateIndex;
+        GameManager.Instance.ChangeState(gameState);
+    }
+
+    //allow the different UIs to register with the UIManager once they are loaded
+   public void RegisterUI(GameObject uiObject, GameState gameState)
+    {
+        activeUI = uiObject;
+
+        if (gameState == GameState.MENU) { }
+
+        if(gameState == GameState.GAME) {
+            gameMessage = activeUI.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>();
+            depthText = activeUI.transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>();
+        }
+
+
+    }
+
+    //change UI based on game state
+    void HandleGameStateChanged(GameState gameState)
+    {
+
+        if (gameState == GameState.GAMEOVER)
         {
-            mainMenu.SetActive(false);
-            gameUI.SetActive(true);
+            gameMessage.text = "GAME OVER";
         }
     }
 
-    public void ShowAlertMessage(string msgText)
+    public void SetDepthText(string depth)
     {
-        alertMessage.text = msgText;
-        alertMessageAnimator.Play("FadeOut",0,0);
+        depthText.text = depth + " ft";
     }
-
-    public void UpdateTreasureText(string msgText) {
-        treasureText.text = msgText;
-
-    }
-
-    public void UpdateArtefactText(string msgText) {
-        artefactText.text = msgText;
-    }  
-
-    public void UpdateDepthText(string depth)
-    {
-        depthText.text = depth;
-    }
-
 }

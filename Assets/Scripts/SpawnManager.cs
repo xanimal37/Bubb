@@ -1,13 +1,10 @@
-using System.CodeDom.Compiler;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
     public static SpawnManager spawnManager { get; private set; }
-    public GameObject player;
+    public GameObject player { get; private set; }
 
     private void Awake()
     {
@@ -15,8 +12,8 @@ public class SpawnManager : MonoBehaviour
     }
     private void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(BubbleSpawn());
-        StartCoroutine(TurtleSpawn());
         StartCoroutine(FishSpawn());
     }
 
@@ -44,18 +41,6 @@ public class SpawnManager : MonoBehaviour
                 bub.speed = GenerateScale();
             }
             yield return new WaitForSeconds(2);
-        }
-    }
-
-    IEnumerator TurtleSpawn()
-    {
-        while (true)
-        {
-            Spawnable t = TurtlePool.Pool.Get();
-            if (t != null) { 
-            t.transform.position = GenerateSpawnPosition(t);
-        }
-            yield return new WaitForSeconds(3);
         }
     }
 
@@ -87,10 +72,7 @@ public class SpawnManager : MonoBehaviour
             return new Vector3 (xPos, yPos, -2);
 
         }
-        if (spawnable is Turtle)
-        {
-            
-        }
+       
         return Vector3.zero;
     }
 

@@ -9,6 +9,7 @@ TagManager:
   - Poison
   - Fish
   - Collectible
+  - ActiveUI
   layers:
   - Default
   - TransparentFX

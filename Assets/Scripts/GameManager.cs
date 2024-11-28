@@ -1,74 +1,92 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
-
+using System.Collections;
+using System;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager gameManager { get; private set; }
+    public static GameManager Instance { get; private set; }
 
-    public GameObject player;
+    public GameState gameState;
 
-    private PlayerStats playerStats;
-    
-    public GameState gameState { get; private set; }
+    Player player;
 
-    public UnityEvent<GameState> gameStateChanged;
-
+    public static event Action<GameState> OnBeforeGameStateChanged;
+    public static event Action<GameState> OnAfterGameStateChanged;
 
     private void Start()
     {
-        gameManager = this;
-        playerStats = GetComponent<PlayerStats>();
-        player.SetActive(false);
+        Instance = this;
+        //start the game in the first state
+        ChangeState(GameState.MENU);
+
     }
 
-
-    public void GameOver()
+    public void ChangeState(GameState newState)
     {
-        UIManager.uiManager.ShowAlertMessage("GAME OVER");
-        player.SetActive(false);
+        if (newState == gameState)
+        { return; }
+
+            OnBeforeGameStateChanged?.Invoke(newState);
+
+            gameState = newState;
+
+            switch (gameState)
+            {
+                case GameState.MENU:
+                    ShowMenu();
+                    break;
+                case GameState.GAME:
+                    StartGame();
+                    break;
+                case GameState.GAMEOVER:
+                    GameOver();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+            }
+
+            OnAfterGameStateChanged?.Invoke(newState);
     }
 
-    public void StartGame()
-    {
-        gameState = GameState.GAME;
-        gameStateChanged.Invoke(gameState);
-        //load game scene 1
-        SceneManager.LoadSceneAsync(1);
-        player.SetActive(true);
-        UIManager.uiManager.ShowAlertMessage("A Baby Turtle got drawn too deep by the current! \nGet to it so it can have enough air to reach the surface!");
-    }
-
-    public void UpdateTreasure()
-    {
-        playerStats.treasure++;
-       UIManager.uiManager.UpdateTreasureText( "Treasure: "+playerStats.treasure.ToString());
-        UIManager.uiManager.ShowAlertMessage("Picked up Treasure!");
-    }
-
-    public void PickUpArtefact()
-    {
-        playerStats.hasArtefact = true;
-        UIManager.uiManager.UpdateArtefactText("Artefact: " + playerStats.hasArtefact.ToString());
-        UIManager.uiManager.ShowAlertMessage("Picked up Artefact!");
-    }
-
-    public void CollectiblePickedUp(Collectible collectible)
-    {
-        if(collectible is Artefact)
+    private void ShowMenu() {
+        SceneManager.LoadScene("Bubb_menu",LoadSceneMode.Single);
         
-            {PickUpArtefact(); 
-        }
-        if(collectible is Treasure)
-        {
-            UpdateTreasure();
-        }
     }
 
-    public void UpdateDepth(string depth)
-    {
-        UIManager.uiManager.UpdateDepthText(depth.ToString());
+    private void StartGame() {
+        SceneManager.LoadScene("Bubb_game",LoadSceneMode.Single);
     }
-   
+
+    //register player
+    //react to player events
+    public void RegisterPlayer(Player p)
+    {
+        player = p;
+        player.PlayerDied += HandlePlayerDied;
+    }
+    private void HandlePlayerDied()
+    {
+        ChangeState(GameState.GAMEOVER);
+        player.PlayerDied -= HandlePlayerDied;
+        player = null;
+    }
+
+    private void GameOver()
+    {
+        Timer gameOverTimer = new Timer(6.0f);
+        gameOverTimer.SetAction(SetGameStateMenu);
+        StartCoroutine(gameOverTimer.RunTimer());
+    }
+
+    //needs to be a method for the set action on the generic timer
+    private void SetGameStateMenu()
+    {
+        ChangeState(GameState.MENU);
+    }
+
+
+
+
 }

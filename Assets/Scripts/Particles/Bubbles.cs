@@ -10,6 +10,10 @@ public class Bubbles : MonoBehaviour
     private ParticleSystem moveParticles;
 
 
+    private void Start()
+    {
+        PlayExplodeParticles();
+    }
     public void PlayExplodeParticles()
     {
         explodeParticles.Play();

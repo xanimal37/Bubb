@@ -1,5 +1,9 @@
+using System;
+
+[Serializable]
 public enum GameState
 {
-    MAINMENU,
-    GAME
+    MENU =0,
+    GAME=1,
+    GAMEOVER=2
 }
