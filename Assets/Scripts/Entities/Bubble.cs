@@ -6,42 +6,33 @@ using UnityEngine.Rendering.UI;
 
 public abstract class Bubble : Spawnable, IMover, ICollidable
 {
-    private float _size;
+    public BubbleSize bubbleSize;
     public GameObject particleSystemGO;
 
-    public event Action BubblePop;
+    public event Action<BubbleSize> BubblePop;
 
-    public float size
-    {
-        get { return _size; }
-        set {
-            _size = value;
-            if (_size > 0)
-            {
-                gameObject.transform.localScale = new Vector3(size, size, size);
-            }
-            else
-            {
-                Die();
-            }
-        }
-    }
     public float speed { get; set; }
 
 
     //set size on spawn
     private void OnEnable()
     {
-        gameObject.transform.localScale = new Vector3(size,size,size);
+        
         RegisterWithManagers();
     }
 
     public override void Die()
     {
         Instantiate(particleSystemGO,gameObject.transform.position,Quaternion.identity);
-        BubblePop?.Invoke();
+        BubblePop?.Invoke(bubbleSize);
         UnregisterWithManagers();
        base.Die();
+    }
+
+    public void SetSize(BubbleSize size)
+    {
+        bubbleSize = size;
+        gameObject.transform.localScale = new Vector3((int)size, (int)size, (int)size);
     }
 
     public virtual void Move()
@@ -59,15 +50,6 @@ public abstract class Bubble : Spawnable, IMover, ICollidable
         
     }
 
-    public override void RegisterWithManagers()
-    {
-        AudioManager.Instance.RegisterBubble(this);
-    }
-
-    public override void UnregisterWithManagers()
-    {
-        AudioManager.Instance.UnregisterBubble(this);
-    }
 
 
 }

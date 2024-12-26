@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Current : MonoBehaviour
+public class Current : MonoBehaviour, ITriggerable
 {
-    // Start is called before the first frame update
-    void Start()
+    public void ProcessTriggerEntered(Player p)
     {
-        
+        Debug.Log("Triggered current!");
+        //continuous force upward
+        p.GetPlayerInput().ToggleIsInCurrent(true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void ProcessTriggerExited(Player p) {
+        Debug.Log("Exited the current.");
+        p.GetPlayerInput().ToggleIsInCurrent(false);
     }
+
 }

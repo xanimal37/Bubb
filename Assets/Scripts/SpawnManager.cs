@@ -37,8 +37,9 @@ public class SpawnManager : MonoBehaviour
             {
                 bubble.transform.position = GenerateSpawnPosition(bubble);
                 Bubble bub = bubble as Bubble;
-                bub.size = GenerateScale();
-                bub.speed = GenerateScale();
+                int size = GenerateScale();
+                bub.SetSize((BubbleSize)size);
+                bub.speed = (int)bub.bubbleSize*2;
             }
             yield return new WaitForSeconds(2);
         }
@@ -76,9 +77,8 @@ public class SpawnManager : MonoBehaviour
         return Vector3.zero;
     }
 
-    float GenerateScale()
-    {
-        float randomScale = Random.Range(.5f, 5.5f);
-        return randomScale;
+    int GenerateScale()
+    { 
+        return Random.Range(1, 5);
     }
 }

@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface ITriggerable 
 {
-    public void ProcessTrigger(Player player);
+    public void ProcessTriggerEntered(Player player);
+
+    public void ProcessTriggerExited(Player player);
 }

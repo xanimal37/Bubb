@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class PoisonBubble : Bubble, ICollidable
 {
-    private float damage = -0.25f;
-
     public override void ProcessCollision(Player player) {
-        player.GetPlayerSize().UpdateSize(damage);
+        player.GetPlayerSize().UpdateSize(bubbleSize,true);
+        
         Die();
     }
     

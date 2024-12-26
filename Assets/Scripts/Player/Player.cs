@@ -12,9 +12,11 @@ public class Player: MonoBehaviour
     private MeshRenderer playerRenderer;
     private Collider playerCollider;
 
+    private GameObject goal;
+
     //events
-    public event Action<PlayerState> playerStateChanged;
     public event Action PlayerDied;
+    public event Action<string> PlayerWon;
 
     //state
     public PlayerState playerState = PlayerState.NORMAL;
@@ -27,10 +29,13 @@ public class Player: MonoBehaviour
         bubbles = gameObject.GetComponentInChildren<Bubbles>();
         playerRenderer = GetComponentInChildren<MeshRenderer>();
         playerCollider = GetComponentInChildren<Collider>();
+
+        goal = GameObject.FindGameObjectWithTag("Goal");
     }
-    void Start()
+
+    private void Start()
     {
-        RegisterWithManagers();
+        GameManager.Instance.RegisterPlayer(this);
     }
 
     //Collision detect
@@ -51,7 +56,15 @@ public class Player: MonoBehaviour
         //get other entity ITriggerable
         ITriggerable triggeredBy = other.gameObject.GetComponent<ITriggerable>();
         if (triggeredBy != null) {
-            triggeredBy.ProcessTrigger(this);
+            triggeredBy.ProcessTriggerEntered(this);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        ITriggerable triggeredBy = other.gameObject.GetComponent<ITriggerable>();
+        if (triggeredBy != null) { 
+            triggeredBy.ProcessTriggerExited(this); 
         }
     }
 
@@ -61,7 +74,15 @@ public class Player: MonoBehaviour
         playerCollider.enabled = false;
         playerState = PlayerState.DEAD;
         PlayerDied?.Invoke();
-        UnregisterWithManagers();
+        Invoke("DeactivatePlayer", 1.0f);
+    }
+
+    public void Win(string msg)
+    {
+        playerState = PlayerState.DEAD;
+        playerRenderer.enabled = false;
+        playerCollider.enabled = false;
+        PlayerWon?.Invoke(msg);
         Invoke("DeactivatePlayer", 1.0f);
     }
 
@@ -88,19 +109,6 @@ public class Player: MonoBehaviour
         playerInput.GetRigidBody().isKinematic = isKinematic;
     }
 
-    public void SetPlayerParent(Transform trans)
-    {
-        transform.SetParent(trans,false);
-    }
-
-    private void RegisterWithManagers() { 
-        AudioManager.Instance.RegisterPlayer(this);
-        GameManager.Instance.RegisterPlayer(this);
-    }
-
-    private void UnregisterWithManagers() {
-        AudioManager.Instance.UnregisterPlayer(this);
-        
-        }
+   
 
 }

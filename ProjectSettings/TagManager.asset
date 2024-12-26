@@ -10,6 +10,7 @@ TagManager:
   - Fish
   - Collectible
   - ActiveUI
+  - Goal
   layers:
   - Default
   - TransparentFX

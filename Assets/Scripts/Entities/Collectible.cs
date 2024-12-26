@@ -7,12 +7,17 @@ public abstract class Collectible : MonoBehaviour, ITriggerable
     public CollectibleEvent pickUp;
 
 
-    public void ProcessTrigger(Player player)
+    public void ProcessTriggerEntered(Player player)
     {
-            pickUp.Occurred(this);
-            Destroy(gameObject);
+        pickUp.Occurred(this);
+        Destroy(gameObject);
 
-        }
     }
+
+    public void ProcessTriggerExited(Player p)
+    {
+
+    }
+}
 
   
